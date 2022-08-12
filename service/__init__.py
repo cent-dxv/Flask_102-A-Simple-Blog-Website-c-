@@ -8,8 +8,8 @@ db = SQLAlchemy()
 db_name ='flask_102.db'
 def create_app():
     app = Flask(__name__) 
-
-    app.config['SQL_ALCHEMY_DATABASE_URL'] = f'sqlite:///{db_name}'
+    app.config['SECRET_KEY'] = "helloworld"
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_name}'
     db.__init__(app)
     from .auth import auth
     from .view import view
