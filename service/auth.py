@@ -22,9 +22,9 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('view.home'))
             else:
-                flash("Icorrect user name or password !" ,category='error')
+                flash("Icorrect user name or password !" ,category='erorr')
         else:
-            flash("user dose not  exist" , category='error')
+            flash("user dose not  exist" , category='erorr')
         
 
     return render_template('login.html')
@@ -51,18 +51,18 @@ def sign_up():
         user_name_exist = User.query.filter_by(username =username).first()
 
         if email_exist:
-            flash('Email already exists ' , category='error')
+            flash('Email already exists ' , category='erorr')
         elif user_name_exist:
-            flash('username already in use try other username ' , category = 'error') 
+            flash('username already in use try other username ' , category = 'erorr') 
         elif password1  != password2 :
-            flash('password don\'t match! '  ,category = 'error')
+            flash('password don\'t match! '  ,category = 'erorr')
         elif len(password1) < 6:
-            flash('Password length too short! at least use 6 or above',category = 'error')
+            flash('Password length too short! at least use 6 or above',category = 'erorr')
         elif len(username) < 2:
             print(f" user name is {username} and length {len(username)}")
-            flash('Username too short !  user name must be 3 or above',category = 'error')
+            flash('Username too short !  user name must be 3 or above',category = 'erorr')
         elif len(email) < 4:
-            flash('Invalid email address ! ',category='error')
+            flash('Invalid email address ! ',category='erorr')
         else:
             new_user = User(email= email , username= username , password= generate_password_hash(password1 , method='sha256'))
             db.session.add(new_user)
