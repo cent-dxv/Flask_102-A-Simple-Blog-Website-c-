@@ -16,4 +16,4 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     post_text =db.Column(db.String(255), nullable=False)
-    date_created = db.Column(db.DateTime(timezone=True), default=func.now()) 
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now())
