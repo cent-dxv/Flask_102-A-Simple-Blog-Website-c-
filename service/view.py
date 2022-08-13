@@ -1,9 +1,6 @@
-from gettext import find
 from flask import Blueprint, render_template, redirect, url_for,request,flash
 from flask_login import login_required ,current_user
-
-from service import auth
-from .model import Post, User
+from .model import Post, User ,Comment
 from . import db
 
 view = Blueprint("view", __name__)
@@ -32,7 +29,7 @@ def post():
 
     return render_template('create_post.html', user = current_user)
 
-@view.route("/remove-post/<id>" , methods =[ 'GET' ])
+@view.route("/delete-post/<id>" , methods =[ 'GET' ])
 def delete_post(id):
     deleted_post = Post.query.filter_by(id=id).first()
 
@@ -47,13 +44,34 @@ def delete_post(id):
     return redirect('/')
 
 @view.route("/<name>")
+@view.route("/posts/<name>")
+
 @login_required
 def post_by_user(name):
     user = User.query.filter_by(username=name).first()
 
     if not user:
-        flash("User does not exist", category='error')
+        flash("User does not exist", category='erorr')
         return redirect('/')
     
     post = Post.query.filter_by(author=user.id).all()
     return render_template('home.html', user = current_user , posts =post)
+
+@view.route("/create-comment/<post_id>" , methods = ['POST'])
+@login_required
+def create_comment(post_id):
+    post_id = Post.query.filter_by(id=post_id).first()
+    text = request.form.get('text')
+    if not text:
+        flash("Commnet should not be Empty", category='erorr')
+    
+    elif not post_id:
+        flash("Post does not exist", category='erorr')
+    else:
+        flash("successfully commented on post", category='success')
+        new_commnet = Comment(text =text , author = current_user.id , post_id = post_id.id) 
+        db.session.add(new_commnet)
+        db.session.commit()
+        
+    return redirect("/")
+
