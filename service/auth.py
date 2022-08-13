@@ -27,7 +27,7 @@ def login():
             flash("user dose not  exist" , category='erorr')
         
 
-    return render_template('login.html')
+    return render_template('login.html', user = current_user)
 
 
 @auth.route("/logout")
@@ -70,4 +70,4 @@ def sign_up():
             flash(f" we'r gald to see you {username} ")
             redirect('/')
     
-    return render_template('sign-up.html')
+    return render_template('sign-up.html',user = current_user)

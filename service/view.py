@@ -8,4 +8,10 @@ view = Blueprint("view", __name__)
 @login_required
 def home():
     print(current_user.username)
-    return render_template('home.html', name = current_user)
+    return render_template('home.html', user = current_user)
+
+@view.route("/post")
+@login_required
+def post():
+    print(current_user.username)
+    return render_template('post.html', user = current_user)
