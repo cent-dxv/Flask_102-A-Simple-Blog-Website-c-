@@ -23,6 +23,26 @@
     </div>
     <div class="card-body">
       <div class="card-text">{{post.post_text}}</div>
+    
+      {% for commnet in post.Comments %}
+      <br>
+      {{commnet.text}}
+      {% endfor %}
+      <br><br>
+      <form
+      class="input-group mb-3"
+      method="POST"
+      action="/create-comment/{{post.id}}"
+     >
+      <input
+        type="text"
+        id="text"
+        name="text"
+        class="form-control"
+        placeholder="Comment something!"
+      />
+      <button type="submit" class="btn btn-primary">Comment</button>
+    </form>
     </div>
     <div class="card-footer text-muted">{{post.date_created}}</div>
   </div>
