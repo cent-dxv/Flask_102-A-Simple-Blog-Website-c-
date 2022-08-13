@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for,request,flash
 from flask_login import login_required ,current_user
-from .model import Post, User ,Comment
+from .model import Post, User ,Comment ,Like
 from . import db
 
 view = Blueprint("view", __name__)
@@ -75,3 +75,47 @@ def create_comment(post_id):
         
     return redirect("/")
 
+
+
+
+@view.route("/delete-comment/<commnet_id>" , methods = ['GET'])
+@login_required
+def delet_comment(commnet_id):
+    commnet_id = Comment.query.filter_by(id=commnet_id).first()
+    
+    if not commnet_id:
+        flash("Comment does not exist", category='erorr')
+    elif  commnet_id.author != current_user.id:
+        flash("Your not Allowed to delete this", category='erorr')
+
+    else:
+        flash("successfully commented on post", category='success')
+   
+        db.session.delete(commnet_id)
+        db.session.commit()
+        
+    return redirect("/")
+
+
+@view.route("/like_posts/<post_id>" , methods = ['GET'])
+@login_required
+def like_posts(post_id):
+    post_ids = Post.query.filter_by(id=post_id).first()
+    likes = Like.query.filter_by(post_id=post_ids.id).first()
+    print()
+
+    if not post_ids:
+        flash("Post does not exist", category='erorr')
+    elif likes:
+        flash("You have been liked", category='success')
+        
+        db.session.delete(likes)
+        db.session.commit()
+    else:
+        flash("successfully Like on post", category='success')
+
+        new_like = Like( author = current_user.id , post_id = post_ids.id) 
+        db.session.add(new_like)
+        db.session.commit()
+        
+    return redirect("/")
