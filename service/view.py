@@ -14,4 +14,4 @@ def home():
 @login_required
 def post():
     print(current_user.username)
-    return render_template('post.html', user = current_user)
+    return render_template('create_post.html', user = current_user)

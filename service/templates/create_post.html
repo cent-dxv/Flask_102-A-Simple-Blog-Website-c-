@@ -1,20 +1,24 @@
-{% extends "base.html" %} {% block title %} create blog{% endblock %}
+{% extends "base.html" %} {% block title %} create blog{% endblock %} {% block
+content %}
+<h1 align="center">Make a Post</h1>
+<div class="d-flex flex-column justify-content-center">
 
-{% block content
-    %}
-    <h1 align="center">Make a Post</h1>
-    
-    <form method="POST">
-      <textarea name="text" id="text" class="form-control"></textarea>
-      <br />
-      <div align="center">
-        <button type="submit" class="btn btn-lg btn-primary">Post</button>
-      </div>
-    </form>
+  <form align="center" method="POST" class="w-75 justify-content-center ">
+    <textarea name="text" id="text" class="form-control"></textarea>
     <br />
     <div align="center">
+      <button type="submit" class="btn btn-lg btn-primary">Post</button>
       <a href="/home"
-        ><button type="button" class="btn btn-lg btn-secondary">Back</button></a
-      >
+      ><button type="button" class="btn btn-lg btn-secondary">cancel</button></a
+    >
     </div>
-    {% endblock %}
+  </form>
+
+  <br />
+  <!-- <div align="center">
+     <a href="/home"
+      ><button type="button" class="btn btn-lg btn-secondary">cancel</button></a
+    > 
+  </div> -->
+</div>
+{% endblock %}
