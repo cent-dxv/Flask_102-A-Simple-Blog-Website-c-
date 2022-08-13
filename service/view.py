@@ -12,7 +12,7 @@ view = Blueprint("view", __name__)
 def home():
     post = Post.query.all()
     print(post)
-    return render_template('home.html', user = current_user)
+    return render_template('home.html', user = current_user , posts =post)
 
 @view.route("/post" , methods =[ 'POST' , 'GET' ])
 @login_required
@@ -28,5 +28,5 @@ def post():
             flash('Post successfully created ' , category = 'success')
             redirect('/')
 
-    
+
     return render_template('create_post.html', user = current_user)
