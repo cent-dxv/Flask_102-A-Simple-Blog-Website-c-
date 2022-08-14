@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for,request,flash
+from flask import Blueprint, render_template, redirect, url_for,request,flash,jsonify
 from flask_login import login_required ,current_user
 from .model import Post, User ,Comment ,Like
 from . import db
@@ -101,21 +101,26 @@ def delet_comment(commnet_id):
 @login_required
 def like_posts(post_id):
     post_ids = Post.query.filter_by(id=post_id).first()
-    likes = Like.query.filter_by(post_id=post_ids.id).first()
-    print()
 
+    post_like = Like.query.filter_by(post_id=post_id).all()
+    likes = post_like 
+    user_likes = current_user.id in map(lambda x:x.author , post_like)
+
+    print(likes)
     if not post_ids:
-        flash("Post does not exist", category='erorr')
-    elif likes:
-        flash("You have been liked", category='success')
-        
-        db.session.delete(likes)
+        # flash("Post does not exist", category='erorr')
+        return jsonify({"error" : "Post does not exist"} )
+    elif user_likes:
+        # flash("You have been liked", category='success')
+        user_like = Like.query.filter_by(author = current_user.id).first()       
+        db.session.delete(user_like)
         db.session.commit()
+        return jsonify({"likes" : len(post_ids.likes)})
     else:
-        flash("successfully Like on post", category='success')
+        # flash("successfully Like on post", category='success')
 
         new_like = Like( author = current_user.id , post_id = post_ids.id) 
         db.session.add(new_like)
         db.session.commit()
-        
-    return redirect("/")
+        print(post_ids.likes)    
+        return jsonify({"likes" : len(post_ids.likes)})
